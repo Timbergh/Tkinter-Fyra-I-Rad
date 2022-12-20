@@ -143,6 +143,7 @@ def clickCircle(event, i, j, canvasCirlce):
         messagebox.showinfo("Vinst", f"{color} vann!")
     elif rundor == rows*cols:
         messagebox.showinfo("Vinst?", "Lika!")
+
     
 menu = Menu(root)
 root.config(menu=menu)
