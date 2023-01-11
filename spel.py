@@ -19,6 +19,7 @@ canvasCirlce = {}
 rows = 6
 cols = 7
 
+
 def restart_game():
     global bluesTurn
     global rundor
@@ -30,10 +31,13 @@ def restart_game():
     rundor = 0
     vinst = False
     filled = {(i, j): False for i in range(rows) for j in range(cols)}
-    canvasCirlce = {(i, j): (canvasCirlce[(i, j)][0], canvasCirlce[(i, j)][0].create_oval(5, 5, 50, 50, fill="white")) for i in range(rows) for j in range(cols)}
+    canvasCirlce = {(i, j): (canvasCirlce[(i, j)][0], canvasCirlce[(i, j)][0].create_oval(
+        5, 5, 50, 50, fill="white")) for i in range(rows) for j in range(cols)}
     for (i, j) in canvasCirlce:
-        canvasCirlce[(i, j)][0].tag_bind(canvasCirlce[(i, j)][1], "<Button-1>", lambda event, i=i, j=j: clickCircle(event, i, j, canvasCirlce))
-   
+        canvasCirlce[(i, j)][0].tag_bind(canvasCirlce[(i, j)][1], "<Button-1>",
+                                         lambda event, i=i, j=j: clickCircle(event, i, j, canvasCirlce))
+
+
 for i in range(rows):
     for j in range(cols):
         canvas = Canvas(root, width=50, height=50, bg="SystemButtonFace")
@@ -42,7 +46,9 @@ for i in range(rows):
         circle = canvas.create_oval(5, 5, 50, 50, fill="white")
         filled[(i, j)] = False
         canvasCirlce[(i, j)] = (canvas, circle)
-        canvas.tag_bind(circle, "<Button-1>", lambda event, i=i, j=j: clickCircle(event, i, j, canvasCirlce))
+        canvas.tag_bind(circle, "<Button-1>", lambda event, i=i,
+                        j=j: clickCircle(event, i, j, canvasCirlce))
+
 
 def update_dimensions(new_rows, new_cols):
     global rows
@@ -50,66 +56,68 @@ def update_dimensions(new_rows, new_cols):
     rows = new_rows
     cols = new_cols
 
+
 def dimensions(rows, cols):
     global canvasCirlce
     global filled
     global rundor
-    
+
     if rundor == 0:
         update_dimensions(rows, cols)
-        # Destroy existing canvas objects
         for (i, j) in canvasCirlce:
             canvasCirlce[(i, j)][0].destroy()
 
-        # Clear the canvasCirlce and filled dictionaries
         canvasCirlce.clear()
         filled.clear()
-        
-        # Create new widgets with the desired number of rows and columns
+
         for i in range(rows):
             for j in range(cols):
-                canvas = Canvas(root, width=50, height=50, bg="SystemButtonFace")
+                canvas = Canvas(root, width=50, height=50,
+                                bg="SystemButtonFace")
                 canvas.grid(row=i, column=j)
 
                 circle = canvas.create_oval(5, 5, 50, 50, fill="white")
                 filled[(i, j)] = False
                 canvasCirlce[(i, j)] = (canvas, circle)
-                canvas.tag_bind(circle, "<Button-1>", lambda event, i=i, j=j: clickCircle(event, i, j, canvasCirlce))
+                canvas.tag_bind(circle, "<Button-1>", lambda event,
+                                i=i, j=j: clickCircle(event, i, j, canvasCirlce))
+
 
 def check_win(color):
     global rows
     global cols
-    # Check rows
     for i in range(rows):
         for j in range(cols - 3):
             if canvasCirlce[(i, j)][0].itemcget(canvasCirlce[(i, j)][1], "fill") == color and canvasCirlce[(i, j+1)][0].itemcget(canvasCirlce[(i, j+1)][1], "fill") == color and canvasCirlce[(i, j+2)][0].itemcget(canvasCirlce[(i, j+2)][1], "fill") == color and canvasCirlce[(i, j+3)][0].itemcget(canvasCirlce[(i, j+3)][1], "fill") == color:
                 return True
-    
-    # Check columns
+
     for i in range(rows - 3):
         for j in range(cols):
             if canvasCirlce[(i, j)][0].itemcget(canvasCirlce[(i, j)][1], "fill") == color and canvasCirlce[(i+1, j)][0].itemcget(canvasCirlce[(i+1, j)][1], "fill") == color and canvasCirlce[(i+2, j)][0].itemcget(canvasCirlce[(i+2, j)][1], "fill") == color and canvasCirlce[(i+3, j)][0].itemcget(canvasCirlce[(i+3, j)][1], "fill") == color:
                 return True
-    
-    # Check diagonal
+
     for i in range(rows - 3):
         for j in range(cols - 3):
             if canvasCirlce[(i, j)][0].itemcget(canvasCirlce[(i, j)][1], "fill") == color and canvasCirlce[(i+1, j+1)][0].itemcget(canvasCirlce[(i+1, j+1)][1], "fill") == color and canvasCirlce[(i+2, j+2)][0].itemcget(canvasCirlce[(i+2, j+2)][1], "fill") == color and canvasCirlce[(i+3, j+3)][0].itemcget(canvasCirlce[(i+3, j+3)][1], "fill") == color:
                 return True
             if canvasCirlce[(i, j+3)][0].itemcget(canvasCirlce[(i, j+3)][1], "fill") == color and canvasCirlce[(i+1, j+2)][0].itemcget(canvasCirlce[(i+1, j+2)][1], "fill") == color and canvasCirlce[(i+2, j+2)][0].itemcget(canvasCirlce[(i+2, j+1)][1], "fill") == color and canvasCirlce[(i+3, j)][0].itemcget(canvasCirlce[(i+3, j)][1], "fill") == color:
                 return True
-    
+
     return False
+
 
 def animate_circle(row, column, color):
     # Animera cirkeln
     for i in range(row):
-        canvasCirlce[(i, column)][0].itemconfig(canvasCirlce[(i, column)][1], fill=color)
+        canvasCirlce[(i, column)][0].itemconfig(
+            canvasCirlce[(i, column)][1], fill=color)
         root.update()
         time.sleep(0.01)
-        canvasCirlce[(i, column)][0].itemconfig(canvasCirlce[(i, column)][1], fill="white")
+        canvasCirlce[(i, column)][0].itemconfig(
+            canvasCirlce[(i, column)][1], fill="white")
         root.update()
         time.sleep(0.01)
+
 
 def clickCircle(event, i, j, canvasCirlce):
     global vinst, color, bluesTurn, rundor, clickTime, cooldown, rows, cols
@@ -121,7 +129,7 @@ def clickCircle(event, i, j, canvasCirlce):
         return
 
     clickTime = time.time()
-    
+
     # Hitta den första tomma cirkeln i collumnen du klickar på
     for i in range(rows-1, -1, -1):
         if not filled[(i, j)] and not vinst:
@@ -134,7 +142,8 @@ def clickCircle(event, i, j, canvasCirlce):
                 bluesTurn = True
             animate_circle(i, j, color)
             filled[(i, j)] = True
-            new_circle = canvasCirlce[(i, j)][0].create_oval(5, 5, 50, 50, fill=color)
+            new_circle = canvasCirlce[(i, j)][0].create_oval(
+                5, 5, 50, 50, fill=color)
             rundor += 1
             canvasCirlce[(i, j)] = (canvasCirlce[(i, j)][0], new_circle)
             break
@@ -144,7 +153,7 @@ def clickCircle(event, i, j, canvasCirlce):
     elif rundor == rows*cols:
         messagebox.showinfo("Vinst?", "Lika!")
 
-    
+
 menu = Menu(root)
 root.config(menu=menu)
 gameMenu = Menu(menu)
